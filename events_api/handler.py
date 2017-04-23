@@ -1,3 +1,5 @@
+import random
+
 from django.http import HttpResponse
 from slackclient import SlackClient
 
@@ -16,12 +18,31 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
-        print event.get('event').get('text')
-        if 'replyme' in event.get('event').get('text'):
-            print 'replying...'
+        reply = ''
+        text = event.get('event').get('text')
+
+        if 'i love you' in text:
+            reply = 'I love you too dear :kiss:'
+
+        elif 'its my birthday' in text:
+            reply = 'Oh great!! Many many happy returns of the day dear :birthday: :tada:'
+
+        elif 'tell me a joke' in text:
+            jokes = [
+                'Born free, taxed to death :smile:',
+                'For Sale: Parachute. Only used once, never opened :smile:',
+                'What is faster Hot or cold? Hot, because you can catch a cold :smile:',
+            ]
+            reply = random.choice(jokes)
+
+        else:
+            pass
+
+        if reply:
             self.client.api_call(
                 'chat.postMessage',
                 channel=event.get('event').get('channel'),
-                text="Your wish"
+                text=reply
             )
+
         return HttpResponse()
