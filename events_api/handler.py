@@ -1,16 +1,16 @@
 # import os
 
 from django.http import HttpResponse
-# from slackclient import SlackClient
+from slackclient import SlackClient
 
 
 class Irobot(object):
     """ slack bot using events api, refer https://api.slack.com/events-api """
 
-    # def __init__(self, **kwargs):
-    #     """ initialize bot """
-    #     self.client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
-    #     self.client.rtm_connect()
+    def __init__(self, **kwargs):
+        """ initialize bot """
+        token = kwargs.pop('token')
+        self.client = SlackClient(token.access_token)
 
     def url_verification(self, event):
         """event handler for url_verification, refer https://api.slack.com/events/url_verification """

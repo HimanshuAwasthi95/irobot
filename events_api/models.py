@@ -7,9 +7,14 @@ from django.db import models
 
 
 class Token(models.Model):
+    """ table to store the tokens associated with different teams """
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     team = models.CharField(max_length=100)
     auth_token_json = fields.JSONField()
     access_token_json = fields.JSONField()
     created_on = models.DateTimeField(auto_now_add=True)
     last_modified_on = models.DateTimeField(auto_now=True)
+
+    @property
+    def access_token(self):
+        return self.access_token_json.get('access_token')

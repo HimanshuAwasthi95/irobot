@@ -30,8 +30,11 @@ class Incoming(View):
         # log data
         print incoming_data
 
+        # retrieve access token for the team
+        token = Token.objects.filter(team=incoming_data['team_id'])
+
         # invoke handler
-        bot = Irobot()
+        bot = Irobot(token=token)
         event_type = incoming_data['type'].replace('.', '_')
         event_handler = getattr(bot, event_type, False)
         if event_handler:
