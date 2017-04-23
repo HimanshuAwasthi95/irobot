@@ -17,11 +17,10 @@ class Irobot(object):
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
         if 'replyme' in event.get('event').get('text'):
+            print 'replying...'
             self.client.api_call(
                 'chat.postMessage',
-                user='irobot',
-                as_user=True,
                 channel=event.get('event').get('channel'),
-                text="Hello from Python! :tada:"
+                text="Your wish"
             )
         return HttpResponse()
