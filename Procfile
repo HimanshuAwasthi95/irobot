@@ -1,1 +1,1 @@
-web: gunicorn irobot_events_api:app --log-file -
+web: gunicorn irobot.wsgi --log-file -
