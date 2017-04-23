@@ -59,12 +59,9 @@ class OauthFinish(View):
     def get(self, request, *args, **kwargs):
         """ GET method handler """
 
-        # parse data
-        incoming_data = json.loads(request.data)
-
         # prepare payload
         payload = {
-            'code': incoming_data.get('code'),
+            'code': request.GET['code'],
             'client_id': settings.SLACK['OAUTH']['CLIENT_ID'],
             'client_secret': settings.SLACK['OAUTH']['CLIENT_SECRET']
         }
@@ -83,7 +80,7 @@ class OauthFinish(View):
         # save data in db
         record = Tokens()
         record.user = 'test_user'
-        record.auth_token_json = incoming_data
+        record.auth_token_json = request.GET
         record.access_token_json = response_data
         record.save()
 
