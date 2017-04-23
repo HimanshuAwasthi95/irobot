@@ -66,6 +66,11 @@ class OauthFinish(View):
             'client_secret': settings.SLACK['OAUTH']['CLIENT_SECRET']
         }
 
+        # prepare headers
+        headers = {
+            'content-type': 'application/json',
+        }
+
         # prepare end point url
         end_point = "{}?{}".format(
             settings.SLACK['OAUTH']['ACCESS_END_POINT'],
@@ -73,7 +78,7 @@ class OauthFinish(View):
         )
 
         # retrieve access token
-        response = requests.post(end_point, json=payload)
+        response = requests.post(end_point, json=payload, headers=headers)
         response.raise_for_status()
         response_data = response.json()
 
