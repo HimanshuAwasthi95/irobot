@@ -25,7 +25,10 @@ class Incoming(View):
         """ POST method handler """
 
         # parse data
-        incoming_data = json.loads(request.data)
+        incoming_data = json.loads(request.body)
+
+        # log data
+        print incoming_data
 
         # invoke handler
         event_type = incoming_data['type'].replace('.', '_')
