@@ -16,6 +16,7 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
+        print event.get('event').get('text')
         if 'replyme' in event.get('event').get('text'):
             print 'replying...'
             self.client.api_call(

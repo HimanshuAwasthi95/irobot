@@ -35,7 +35,7 @@ class Incoming(View):
 
         # invoke handler
         bot = Irobot(token=token)
-        event_type = incoming_data['type'].replace('.', '_')
+        event_type = incoming_data['event']['type']
         event_handler = getattr(bot, event_type, False)
         if event_handler:
             return event_handler(incoming_data)
