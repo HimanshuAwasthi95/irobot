@@ -1,7 +1,7 @@
-import os
+# import os
 
 from django.http import HttpResponse
-from slackclient import SlackClient
+# from slackclient import SlackClient
 
 
 class Irobot(object):
