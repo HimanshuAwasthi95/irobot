@@ -29,10 +29,10 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message, refer https://api.slack.com/events/message """
-        if event.get('username') != 'mybot':
+        if event.get('bot_id') != os.environ.get('SLACK_BOT_ID'):
             self.client.api_call(
                 'chat.postMessage',
-                user='mybot',
+                user='irobot',
                 as_user=True,
                 channel=event.get('channel'),
                 text="Hello from Python! :tada:"
