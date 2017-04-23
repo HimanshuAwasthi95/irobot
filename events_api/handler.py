@@ -1,5 +1,3 @@
-# import os
-
 from django.http import HttpResponse
 from slackclient import SlackClient
 
@@ -18,12 +16,12 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
-        # if event.get('event').get('bot_id') != os.environ.get('SLACK_BOT_ID'):
-        #     self.client.api_call(
-        #         'chat.postMessage',
-        #         user='irobot',
-        #         as_user=True,
-        #         channel=event.get('event').get('channel'),
-        #         text="Hello from Python! :tada:"
-        #     )
+        if 'replyme' in event.get('event').get('text'):
+            self.client.api_call(
+                'chat.postMessage',
+                user='irobot',
+                as_user=True,
+                channel=event.get('event').get('channel'),
+                text="Hello from Python! :tada:"
+            )
         return HttpResponse()
