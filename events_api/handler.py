@@ -1,30 +1,8 @@
 import os
-import json
-
-from flask import Flask
-from flask import request
 
 from slackclient import SlackClient
 
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def home():
-    return 'Welcome to irobot!'
-
-
-@app.route('/events', methods=["POST"])
-def events_endpoint():
-    bot = Irobot()
-    event = json.loads(request.data)
-    print event
-    event_type = event.get('event').get('type').replace('.', '_')
-    event_handler = getattr(bot, event_type, False)
-    if event_handler:
-        return event_handler(event)
-    return 'success'
+from django.http import HttpResponse
 
 
 class Irobot(object):
@@ -37,7 +15,7 @@ class Irobot(object):
 
     def url_verification(self, event):
         """event handler for url_verification, refer https://api.slack.com/events/url_verification """
-        return event.get('challenge')
+        return HttpResponse(event.get('challenge'))
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
@@ -49,4 +27,4 @@ class Irobot(object):
                 channel=event.get('event').get('channel'),
                 text="Hello from Python! :tada:"
             )
-        return 'success'
+        return HttpResponse()
