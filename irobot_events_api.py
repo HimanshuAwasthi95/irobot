@@ -19,6 +19,7 @@ def home():
 def events_endpoint():
     bot = Irobot()
     event = json.loads(request.data)
+    print event
     event_type = event.get('type').replace('.', '_')
     event_handler = getattr(bot, event_type, False)
     if event_handler:
