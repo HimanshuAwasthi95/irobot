@@ -5,7 +5,7 @@ from slackclient import SlackClient
 
 
 class Irobot(object):
-    """ slack bot using RTM API """
+    """ slack bot using rtm api, refer https://api.slack.com/rtm """
 
     def __init__(self, **kwargs):
         """ initialize bot """
@@ -30,7 +30,7 @@ class Irobot(object):
         """ event handler for message, refer https://api.slack.com/events/message """
         self.client.api_call(
             'chat.postMessage',
-            channel=event.get('type'),
+            channel=event.get('channel'),
             text="Hello from Python! :tada:"
         )
 
