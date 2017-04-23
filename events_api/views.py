@@ -82,9 +82,10 @@ class OauthFinish(View):
 
         # save data in db
         record = Tokens()
-        record.user = ''
+        record.user = 'test_user'
         record.auth_token_json = incoming_data
         record.access_token_json = response_data
+        record.save()
 
         # return 200 OK
-        return HttpResponse()
+        return HttpResponse('Oauth finished successfully')
