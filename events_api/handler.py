@@ -13,7 +13,7 @@ class Irobot(object):
         self.client = SlackClient(token.access_token)
 
     def url_verification(self, event):
-        """event handler for url_verification, refer https://api.slack.com/events/url_verification """
+        """ event handler for url_verification, refer https://api.slack.com/events/url_verification """
         return HttpResponse(event.get('challenge'))
 
     def message(self, event):

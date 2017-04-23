@@ -31,7 +31,7 @@ class Incoming(View):
         print incoming_data
 
         # retrieve access token for the team
-        token = Token.objects.filter(team=incoming_data['team_id'])
+        token = Token.objects.get(team=incoming_data['team_id'])
 
         # invoke handler
         bot = Irobot(token=token)
