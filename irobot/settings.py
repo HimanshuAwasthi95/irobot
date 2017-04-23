@@ -155,6 +155,6 @@ SLACK = {
         'CLIENT_SECRET': os.environ['SLACK_APP_CLIENT_SECRET'],
         'AUTH_END_POINT': 'https://slack.com/oauth/authorize',
         'ACCESS_END_POINT': 'https://slack.com/api/oauth.access',
-        'SCOPES': 'chat:write:bot',
+        'SCOPES': 'team:read chat:write:bot',
     }
 }

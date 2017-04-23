@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='Token',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('user', models.CharField(max_length=100)),
+                ('team', models.CharField(max_length=100)),
                 ('auth_token_json', django.contrib.postgres.fields.jsonb.JSONField()),
                 ('access_token_json', django.contrib.postgres.fields.jsonb.JSONField()),
                 ('created_on', models.DateTimeField(auto_now_add=True)),

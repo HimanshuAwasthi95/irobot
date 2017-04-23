@@ -7,7 +7,8 @@ from .models import Token
 
 
 class TokensAdmin(admin.ModelAdmin):
-    pass
+    name = 'events_api'
+    verbose_name = 'Events API'
 
 
 admin.site.register(Token, TokensAdmin)

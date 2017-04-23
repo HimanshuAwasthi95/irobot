@@ -84,7 +84,7 @@ class OauthFinish(View):
 
         # save data in db
         record = Token()
-        record.user = response_data.get('user_id')
+        record.team = response_data.get('team_id')
         record.auth_token_json = request.GET
         record.access_token_json = response_data
         record.save()
