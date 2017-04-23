@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 
 from .handler import Irobot
-from .models import Tokens
+from .models import Token
 
 
 class Incoming(View):
@@ -78,8 +78,8 @@ class OauthFinish(View):
         response_data = response.json()
 
         # save data in db
-        record = Tokens()
-        record.user = 'test_user'
+        record = Token()
+        record.user = response_data.get('user_id')
         record.auth_token_json = request.GET
         record.access_token_json = response_data
         record.save()

@@ -6,7 +6,7 @@ from django.contrib.postgres import fields
 from django.db import models
 
 
-class Tokens(models.Model):
+class Token(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     user = models.CharField(max_length=100)
     auth_token_json = fields.JSONField()
