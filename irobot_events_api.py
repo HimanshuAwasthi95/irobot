@@ -1,10 +1,19 @@
 import os
+import sys
 import json
+import logging
 
 from flask import Flask
 from flask import request
 
 from slackclient import SlackClient
+
+
+log_handler = logging.StreamHandler(sys.stdout)
+log_handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
+log_handler.setLevel(logging.DEBUG)
+log = logging.getLogger(__name__)
+log.addHandler(log_handler)
 
 
 app = Flask(__name__)
@@ -19,11 +28,11 @@ def home():
 def events_endpoint():
     bot = Irobot()
     event = json.loads(request.data)
-    print event
+    log.debug(event)
     event_type = event.get('event').get('type').replace('.', '_')
     event_handler = getattr(bot, event_type, False)
     if event_handler:
-        return event_handler(event.get('event'))
+        return event_handler(event)
     return 'success'
 
 
@@ -41,8 +50,12 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
-        # self.client.api_call(
-        #     'chat.postMessage',
-        #     channel=event.get('channel'),
-        #     text="Hello from Python! :tada:"
-        # )
+        if event.get('event').get('username') != 'mybot':
+            self.client.api_call(
+                'chat.postMessage',
+                user='mybot',
+                as_user=True,
+                channel=event.get('event').get('channel'),
+                text="Hello from Python! :tada:"
+            )
+        return 'success'
