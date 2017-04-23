@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'events_api',
 ]
 
 MIDDLEWARE = [
@@ -125,8 +126,8 @@ STATIC_URL = '/static/'
 
 SLACK = {
     'OAUTH': {
-        'CLIENT_ID': '',
-        'CLIENT_SECRET': '',
+        'CLIENT_ID': os.environ['SLACK_APP_CLIENT_ID'],
+        'CLIENT_SECRET': os.environ['SLACK_APP_CLIENT_SECRET'],
         'AUTH_END_POINT': 'https://slack.com/oauth/authorize',
         'ACCESS_END_POINT': 'https://slack.com/api/oauth.access',
         'SCOPES': ('chat:write:user',),
