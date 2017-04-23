@@ -56,8 +56,8 @@ class OauthStart(View):
 class OauthFinish(View):
     """ endpoint to which the slack will post the authorization code """
 
-    def post(self, request, *args, **kwargs):
-        """ POST method handler """
+    def get(self, request, *args, **kwargs):
+        """ GET method handler """
 
         # parse data
         incoming_data = json.loads(request.data)
