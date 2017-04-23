@@ -1,30 +1,30 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 import json
-import requests
-from uuid import uuid4
 from urllib import urlencode
 
-from django.views.generic import View
+import requests
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import View
 
-from .handler import Irobot
+from .celery_tasks import process_event
+from .models import Tokens
 
 
 class Incoming(View):
     """ endpoint to handle the incoming messages from slack """
 
     def post(self, request, *args, **kwargs):
+        """ POST method handler """
 
         # parse data
         incoming_data = json.loads(request.data)
 
         # invoke handler
-        event_type = incoming_data.get('type').replace('.', '_')
-        event_handler = getattr(Irobot, event_type)
-        event_handler(incoming_data)
+        process_event.delay(incoming_data)
+
+        # return 200 OK
         return HttpResponse()
 
 
@@ -75,9 +75,13 @@ class OauthFinish(View):
         # retrieve access token
         response = requests.post(end_point, json=payload)
         response.raise_for_status()
-
-        # parse data
         response_data = response.json()
-        access_token = response_data.get('access_token')
 
+        # save data in db
+        record = Tokens()
+        record.user = ''
+        record.auth_token_json = incoming_data
+        record.access_token_json = response_data
+
+        # return 200 OK
         return HttpResponse()
