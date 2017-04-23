@@ -3,11 +3,11 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import Tokens
+from .models import Token
 
 
 class TokensAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Tokens, TokensAdmin)
+admin.site.register(Token, TokensAdmin)
