@@ -5,35 +5,36 @@ from slackclient import SlackClient
 
 
 class Irobot(object):
-    """ slack bot """
+    """ slack bot using RTM API """
 
     def __init__(self, **kwargs):
         """ initialize bot """
         self.client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+        self.client.rtm_connect()
 
-    def connect(self):
+    def run(self):
         """ read messages and dispatch to handler """
         while True:
             for event in self.client.rtm_read():
                 event_type = event.get('type').replace('.', '_')
-                event_handler = getattr(self, event_type)
+                event_handler = getattr(self, event_type, False)
                 if event_handler:
                     event_handler(event)
                 time.sleep(1)
 
-    def hello(self, message):
+    def hello(self, event):
         """ event handler for hello, refer https://api.slack.com/rtm#events for more events """
         pass
 
-    def message_im(self, message):
-        """ event handler for message.im """
+    def message(self, event):
+        """ event handler for message, refer https://api.slack.com/events/message """
         self.client.api_call(
             'chat.postMessage',
-            channel=message.get('channel'),
-            text='I love some one direct messaging me :tada:'
+            channel=event.get('type'),
+            text="Hello from Python! :tada:"
         )
 
 
 if __name__ == '__main__':
     bot = Irobot()
-    bot.connect()
+    bot.run()
