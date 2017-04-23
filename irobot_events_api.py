@@ -50,12 +50,12 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
-        if event.get('event').get('username') != 'mybot':
-            self.client.api_call(
-                'chat.postMessage',
-                user='mybot',
-                as_user=True,
-                channel=event.get('event').get('channel'),
-                text="Hello from Python! :tada:"
-            )
+        # if event.get('event').get('username') != 'mybot':
+        #     self.client.api_call(
+        #         'chat.postMessage',
+        #         user='mybot',
+        #         as_user=True,
+        #         channel=event.get('event').get('channel'),
+        #         text="Hello from Python! :tada:"
+        #     )
         return 'success'
