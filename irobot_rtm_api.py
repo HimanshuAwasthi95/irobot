@@ -1,16 +1,7 @@
 import os
-import sys
 import time
-import logging
 
 from slackclient import SlackClient
-
-
-log_handler = logging.StreamHandler(sys.stdout)
-log_handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-log_handler.setLevel(logging.DEBUG)
-log = logging.getLogger(__name__)
-log.addHandler(log_handler)
 
 
 class Irobot(object):
@@ -25,7 +16,7 @@ class Irobot(object):
         """ read messages and dispatch to handler """
         while True:
             for event in self.client.rtm_read():
-                log.debug(event)
+                print event
                 event_type = event.get('type').replace('.', '_')
                 event_handler = getattr(self, event_type, False)
                 if event_handler:

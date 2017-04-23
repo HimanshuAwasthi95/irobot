@@ -1,19 +1,10 @@
 import os
-import sys
 import json
-import logging
 
 from flask import Flask
 from flask import request
 
 from slackclient import SlackClient
-
-
-log_handler = logging.StreamHandler(sys.stdout)
-log_handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
-log_handler.setLevel(logging.DEBUG)
-log = logging.getLogger(__name__)
-log.addHandler(log_handler)
 
 
 app = Flask(__name__)
@@ -28,7 +19,7 @@ def home():
 def events_endpoint():
     bot = Irobot()
     event = json.loads(request.data)
-    log.debug(event)
+    print event
     event_type = event.get('event').get('type').replace('.', '_')
     event_handler = getattr(bot, event_type, False)
     if event_handler:
