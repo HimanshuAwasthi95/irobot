@@ -22,7 +22,7 @@ def create_users(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("migrations", "0001_initial"),
+        ('events_api', "0001_initial"),
     ]
 
     operations = [
