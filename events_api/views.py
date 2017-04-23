@@ -8,7 +8,7 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import View
 
-from .celery_tasks import process_event
+from .handler import Irobot
 from .models import Tokens
 
 
@@ -22,7 +22,10 @@ class Incoming(View):
         incoming_data = json.loads(request.data)
 
         # invoke handler
-        process_event.delay(incoming_data)
+        event_type = incoming_data['type'].replace('.', '_')
+        event_handler = getattr(Irobot, event_type, False)
+        if event_handler:
+            return event_handler(incoming_data)
 
         # return 200 OK
         return HttpResponse()
