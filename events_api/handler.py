@@ -22,7 +22,7 @@ class Irobot(object):
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
 
-        if event.get('user_name') != 'irobot':
+        if event.get('event').get('username') != 'irobot':
 
             # get response from api.ai
             ai = apiai.ApiAI(os.environ['API_AI_CLIENT_ACCESS_TOKEN'])
