@@ -1,6 +1,7 @@
 import json
 import apiai
 import os
+import random
 
 from django.http import HttpResponse
 from slackclient import SlackClient
@@ -21,19 +22,23 @@ class Irobot(object):
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
 
-        # get response from api.ai
-        ai = apiai.ApiAI(os.environ['API_AI_CLIENT_ACCESS_TOKEN'])
-        request = ai.text_request()
-        request.session_id = self.token.team
-        request.query = event.get('event').get('text')
-        response = json.loads(request.getresponse().read())
+        if event.get('user_name') != 'irobot':
 
-        # reply response back to slack
-        for message in response['result']['fulfillment']['messages']:
+            # get response from api.ai
+            ai = apiai.ApiAI(os.environ['API_AI_CLIENT_ACCESS_TOKEN'])
+            request = ai.text_request()
+            request.session_id = self.token.team
+            request.query = event.get('event').get('text')
+            response = json.loads(request.getresponse().read())
+
+            # prepare reply
+            reply = random.choice(response['result']['fulfillment']['messages'])
+
+            # reply response back to slack
             self.client.api_call(
                 'chat.postMessage',
                 channel=event.get('event').get('channel'),
-                text=message
+                text=reply['speech']
             )
 
         return HttpResponse()
