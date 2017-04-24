@@ -1,4 +1,6 @@
 import random
+import apiai
+import os
 
 from django.http import HttpResponse
 from slackclient import SlackClient
@@ -9,8 +11,8 @@ class Irobot(object):
 
     def __init__(self, **kwargs):
         """ initialize bot """
-        token = kwargs.pop('token')
-        self.client = SlackClient(token.access_token)
+        self.token = kwargs.pop('token')
+        self.client = SlackClient(self.token.access_token)
 
     def url_verification(self, event):
         """ event handler for url_verification, refer https://api.slack.com/events/url_verification """
@@ -18,31 +20,20 @@ class Irobot(object):
 
     def message(self, event):
         """ event handler for message.im, refer https://api.slack.com/events/message.im """
-        reply = ''
-        text = event.get('event').get('text')
 
-        if 'i love you' in text:
-            reply = 'I love you too dear :kiss:'
+        # get response from api.ai
+        ai = apiai.ApiAI(os.environ['API_AI_CLIENT_ACCESS_TOKEN'])
+        request = ai.text_request()
+        request.session_id = self.token.team
+        request.query = event.get('event').get('text')
+        response = request.getresponse()
 
-        elif 'its my birthday' in text:
-            reply = 'Oh great!! Many many happy returns of the day dear :birthday: :tada:'
-
-        elif 'tell me a joke' in text:
-            jokes = [
-                'Born free, taxed to death :smile:',
-                'For Sale: Parachute. Only used once, never opened :smile:',
-                'What is faster Hot or cold? Hot, because you can catch a cold :smile:',
-            ]
-            reply = random.choice(jokes)
-
-        else:
-            pass
-
-        if reply:
+        # reply response back to slack
+        for message in response['result']['fulfillment']['messages']:
             self.client.api_call(
                 'chat.postMessage',
                 channel=event.get('event').get('channel'),
-                text=reply
+                text=message
             )
 
         return HttpResponse()
