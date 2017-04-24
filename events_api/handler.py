@@ -26,7 +26,7 @@ class Irobot(object):
         request = ai.text_request()
         request.session_id = self.token.team
         request.query = event.get('event').get('text')
-        response = json.loads(request.getresponse())
+        response = json.loads(request.getresponse().read())
 
         # reply response back to slack
         for message in response['result']['fulfillment']['messages']:
