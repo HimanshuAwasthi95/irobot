@@ -1,7 +1,6 @@
 import json
 import apiai
 import os
-import random
 
 from django.http import HttpResponse
 from slackclient import SlackClient
@@ -31,14 +30,11 @@ class Irobot(object):
             request.query = event.get('event').get('text')
             response = json.loads(request.getresponse().read())
 
-            # prepare reply
-            reply = random.choice(response['result']['fulfillment']['messages'])
-
             # reply response back to slack
             self.client.api_call(
                 'chat.postMessage',
                 channel=event.get('event').get('channel'),
-                text=reply['speech']
+                text=response['result']['fulfillment']['speech']
             )
 
         return HttpResponse()
